@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="p-5 mb-4 bg-light rounded-3 shadow-sm">
+        <div class="container-fluid py-5">
+            <h1 class="display-5 fw-bold">Conclusion</h1>
+            <p class="col-md-8 fs-4">
+                The AI-Powered Inventory Forecasting System successfully demonstrates how machine learning can transform
+                E-Commerce logistics.
+            </p>
+            <p class="text-muted">
+                By proactively predicting demand, businesses can minimize losses and maximize efficiency. This prototype
+                serves as a solid foundation for enterprise-grade inventory solutions.
+            </p>
+        </div>
+    </div>
+
+    <div class="row align-items-md-stretch">
+        <div class="col-md-6">
+            <div class="h-100 p-5 text-white bg-dark rounded-3">
+                <h2>Future Scope</h2>
+                <ul class="mt-3">
+                    <li>Integration with Real-time Order APIs (Amazon/Shopify)</li>
+                    <li>Advanced Deep Learning Models (LSTM/RNN) for complex patterns</li>
+                    <li>Multi-store and warehouse support</li>
+                    <li>Automated Supplier Ordering System</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="h-100 p-5 bg-white border rounded-3 shadow-sm">
+                <h2>Project Benefits</h2>
+                <p>
+                    This project highlights the importance of data-driven decision making. It covers full-stack
+                    development, database management, and AI integration, serving as a comprehensive learning milestone
+                    for the BCA curriculum.
+                </p>
+                <a href="{% url 'home' %}" class="btn btn-outline-dark" type="button">Back to Home</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

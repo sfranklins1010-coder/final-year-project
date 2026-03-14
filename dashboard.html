@@ -1,0 +1,330 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    :root {
+        --primary-gradient: linear-gradient(135deg, #6366f1 0%, #4338ca 100%);
+        --secondary-gradient: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+        --success-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        --warning-gradient: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        --danger-gradient: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+        --glass-bg: rgba(255, 255, 255, 0.7);
+        --glass-border: rgba(255, 255, 255, 0.2);
+    }
+
+    .premium-card {
+        background: var(--glass-bg);
+        backdrop-filter: blur(12px);
+        border: 1px solid var(--glass-border);
+        border-radius: 1.25rem;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .premium-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.12);
+    }
+
+    .stat-card {
+        color: white;
+    }
+
+    .stat-card.primary {
+        background: var(--primary-gradient);
+    }
+
+    .stat-card.danger {
+        background: var(--danger-gradient);
+    }
+
+    .stat-card.warning {
+        background: var(--warning-gradient);
+    }
+
+    .stat-card.success {
+        background: var(--success-gradient);
+    }
+
+    .chart-container {
+        padding: 1.5rem;
+        background: white;
+        border-radius: 1.25rem;
+    }
+
+    .table-container {
+        background: white;
+        border-radius: 1.25rem;
+        padding: 1.5rem;
+    }
+
+    .badge-pill {
+        padding: 0.4em 1em;
+        border-radius: 2rem;
+        font-weight: 600;
+    }
+</style>
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h2 fw-bold mb-0">Analytics Dashboard</h1>
+            <p class="text-muted">Real-time inventory intelligence & forecasting</p>
+        </div>
+        <a href="{% url 'export_data' %}" class="btn btn-dark rounded-pill px-4 py-2 shadow-sm">
+            <i class="fas fa-file-export me-2"></i>Download Report
+        </a>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-3">
+            <div class="premium-card stat-card primary p-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="mb-1 opacity-75 small text-uppercase fw-bold">Total Products</p>
+                        <h2 class="mb-0 fw-bold">{{ total_products }}</h2>
+                    </div>
+                    <i class="fas fa-boxes fa-2x opacity-50"></i>
+                </div>
+                <div class="mt-3 small">
+                    <span class="fw-bold">Active Items</span> in Catalog
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="premium-card stat-card danger p-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="mb-1 opacity-75 small text-uppercase fw-bold">Alert: Low Stock</p>
+                        <h2 class="mb-0 fw-bold">{{ low_stock }}</h2>
+                    </div>
+                    <i class="fas fa-exclamation-circle fa-2x opacity-50"></i>
+                </div>
+                <div class="mt-3 small">
+                    <span class="fw-bold">Action Required</span> immediately
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="premium-card stat-card warning p-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="mb-1 opacity-75 small text-uppercase fw-bold">Overstock Items</p>
+                        <h2 class="mb-0 fw-bold">{{ overstock }}</h2>
+                    </div>
+                    <i class="fas fa-arrow-alt-circle-up fa-2x opacity-50"></i>
+                </div>
+                <div class="mt-3 small">
+                    Optimize with <span class="fw-bold">Clearance</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="premium-card stat-card success p-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="mb-1 opacity-75 small text-uppercase fw-bold">Stock Health</p>
+                        <h2 class="mb-0 fw-bold">{{ stock_health }}%</h2>
+                    </div>
+                    <i class="fas fa-heartbeat fa-2x opacity-50"></i>
+                </div>
+                <div class="mt-3 small">
+                    Overall <span class="fw-bold">Inventory Efficiency</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Secondary Metrics -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-6">
+            <div class="premium-card p-4 d-flex align-items-center">
+                <div class="bg-primary bg-opacity-10 text-primary p-3 rounded-circle me-4">
+                    <i class="fas fa-hand-holding-usd fa-2x"></i>
+                </div>
+                <div>
+                    <p class="text-muted mb-0 small text-uppercase fw-bold">Total Inventory Value</p>
+                    <h3 class="mb-0 fw-bold">${{ total_inventory_value }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="premium-card p-4 d-flex align-items-center">
+                <div class="bg-success bg-opacity-10 text-success p-3 rounded-circle me-4">
+                    <i class="fas fa-chart-line fa-2x"></i>
+                </div>
+                <div>
+                    <p class="text-muted mb-0 small text-uppercase fw-bold">Projected Monthly Revenue</p>
+                    <h3 class="mb-0 fw-bold">${{ projected_revenue }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="row g-4 mb-5">
+        <div class="col-lg-8">
+            <div class="premium-card chart-container h-100">
+                <h5 class="fw-bold mb-4">Market Demand vs Holding Stock</h5>
+                <canvas id="forecastChart" height="150"></canvas>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="premium-card chart-container h-100">
+                <h5 class="fw-bold mb-4">Category Distribution</h5>
+                <canvas id="categoryPieChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Inventory Table -->
+    <div class="premium-card table-container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h5 class="fw-bold mb-0">Inventory Intelligence Report</h5>
+            <div class="dropdown">
+                <button class="btn btn-sm btn-outline-secondary rounded-pill px-3" type="button"
+                    data-bs-toggle="dropdown">
+                    <i class="fas fa-filter me-1"></i>Filter
+                </button>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle border-0">
+                <thead>
+                    <tr class="text-muted small text-uppercase">
+                        <th class="border-0">Product</th>
+                        <th class="border-0">Category</th>
+                        <th class="border-0">Stock Level</th>
+                        <th class="border-0">Forecasted</th>
+                        <th class="border-0">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for f in forecasts %}
+                    <tr class="border-0">
+                        <td class="border-0">
+                            <div class="fw-bold text-dark">{{ f.product.name }}</div>
+                            <div class="text-muted small">Unit Price: ${{ f.product.unit_price }}</div>
+                        </td>
+                        <td class="border-0">
+                            <span class="badge bg-light text-dark badge-pill border">{{ f.product.category }}</span>
+                        </td>
+                        <td class="border-0">
+                            <div class="fw-bold">{{ f.product.current_stock }}</div>
+                        </td>
+                        <td class="border-0">
+                            <div class="d-flex align-items-center">
+                                <span class="me-2">{{ f.predicted_demand }}</span>
+                                {% if f.confidence_level == 'High' %}
+                                <i class="fas fa-circle text-success small" title="High Confidence"></i>
+                                {% elif f.confidence_level == 'Medium' %}
+                                <i class="fas fa-circle text-warning small" title="Medium Confidence"></i>
+                                {% else %}
+                                <i class="fas fa-circle text-danger small" title="Low Confidence"></i>
+                                {% endif %}
+                            </div>
+                        </td>
+                        <td class="border-0">
+                            {% if f.inventory_status == 'Low Stock' %}
+                            <span class="badge bg-danger bg-opacity-10 text-danger badge-pill">
+                                <i class="fas fa-arrow-down me-1"></i>Low Stock
+                            </span>
+                            {% elif f.inventory_status == 'Overstock' %}
+                            <span class="badge bg-warning bg-opacity-10 text-warning-emphasis badge-pill">
+                                <i class="fas fa-arrow-up me-1"></i>Overstock
+                            </span>
+                            {% else %}
+                            <span class="badge bg-success bg-opacity-10 text-success badge-pill">
+                                <i class="fas fa-check me-1"></i>Optimal
+                            </span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center py-5">
+                            <i class="fas fa-database fa-3x text-light mb-3"></i>
+                            <p class="text-muted">No data available. Run the population script.</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Data from Django View
+    const labels = {{ chart_labels| safe }};
+    const currentStock = {{ chart_current_stock| safe }};
+    const predictedDemand = {{ chart_predicted_demand| safe }};
+    const catLabels = {{ cat_labels| safe }};
+    const catValues = {{ cat_values| safe }};
+
+    // Bar Chart
+    const ctx = document.getElementById('forecastChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Current Stock',
+                    data: currentStock,
+                    backgroundColor: 'rgba(99, 102, 241, 0.7)',
+                    borderColor: '#6366f1',
+                    borderWidth: 1,
+                    borderRadius: 5
+                },
+                {
+                    label: 'Predicted Demand',
+                    data: predictedDemand,
+                    backgroundColor: 'rgba(239, 68, 68, 0.7)',
+                    borderColor: '#ef4444',
+                    borderWidth: 1,
+                    borderRadius: 5
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'top' }
+            },
+            scales: {
+                y: { beginAtZero: true, grid: { color: '#f3f4f6' } },
+                x: { grid: { display: false } }
+            }
+        }
+    });
+
+    // Category Chart
+    const ctxPie = document.getElementById('categoryPieChart').getContext('2d');
+    new Chart(ctxPie, {
+        type: 'doughnut',
+        data: {
+            labels: catLabels,
+            datasets: [{
+                data: catValues,
+                backgroundColor: [
+                    '#6366f1', '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'
+                ],
+                borderWidth: 0,
+                hoverOffset: 10
+            }]
+        },
+        options: {
+            responsive: true,
+            cutout: '70%',
+            plugins: {
+                legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } }
+            }
+        }
+    });
+</script>
+{% endblock %}

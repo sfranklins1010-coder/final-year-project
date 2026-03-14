@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="hero-section text-center py-5 mb-5"
+    style="background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="badge bg-primary bg-opacity-10 text-primary mb-3 px-3 py-2 rounded-pill">AI-Powered Solution
+                </div>
+                <h1 class="display-4 fw-bold mb-4" style="color: #1e293b;">Inventory Forecasting <br><span
+                        class="text-primary">Made Intelligent</span></h1>
+                <p class="lead text-muted mb-5">
+                    Prevent stock-outs and overstocking with our advanced AI prediction model.
+                    Analyze historical data to forecast future demand with precision.
+                </p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="{% url 'dashboard' %}" class="btn btn-primary btn-lg rounded-pill px-5 shadow-sm">
+                        <i class="fas fa-chart-pie me-2"></i>View Dashboard
+                    </a>
+                    <a href="{% url 'how_it_works' %}" class="btn btn-outline-secondary btn-lg rounded-pill px-5">
+                        Learn More
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container mb-5">
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card h-100 p-4 border-0 shadow-sm text-center">
+                <div class="mb-3 text-primary">
+                    <i class="fas fa-brain fa-3x"></i>
+                </div>
+                <h3 class="h4 fw-bold">Smart Predictions</h3>
+                <p class="text-muted">Uses linear regression to analyze past sales trends and predict future inventory
+                    needs automatically.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 p-4 border-0 shadow-sm text-center">
+                <div class="mb-3 text-success">
+                    <i class="fas fa-chart-line fa-3x"></i>
+                </div>
+                <h3 class="h4 fw-bold">Real-time Insights</h3>
+                <p class="text-muted">Visualize sales patterns and demand forecasts through interactive charts and
+                    reports.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 p-4 border-0 shadow-sm text-center">
+                <div class="mb-3 text-warning">
+                    <i class="fas fa-file-excel fa-3x"></i>
+                </div>
+                <h3 class="h4 fw-bold">Instant Reports</h3>
+                <p class="text-muted">Download detailed inventory forecast reports in Excel format for offline analysis.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="py-5 bg-white">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h2 class="fw-bold mb-4">Why AI Forecasting?</h2>
+                <ul class="list-unstyled">
+                    <li class="mb-3 d-flex align-items-center">
+                        <i class="fas fa-check-circle text-success me-3"></i>
+                        <span>Reduce Inventory Costs</span>
+                    </li>
+                    <li class="mb-3 d-flex align-items-center">
+                        <i class="fas fa-check-circle text-success me-3"></i>
+                        <span>Avoid Stock-outs & Lost Sales</span>
+                    </li>
+                    <li class="mb-3 d-flex align-items-center">
+                        <i class="fas fa-check-circle text-success me-3"></i>
+                        <span>Optimize Supply Chain</span>
+                    </li>
+                    <li class="mb-3 d-flex align-items-center">
+                        <i class="fas fa-check-circle text-success me-3"></i>
+                        <span>Data-Driven Decision Making</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-6 text-center">
+                <i class="fas fa-cubes fa-10x text-light"></i> <!-- Placeholder graphic -->
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
